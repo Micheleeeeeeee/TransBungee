@@ -26,11 +26,15 @@ public final class TransBungee extends Plugin {
          * Do shit here uwu
          */
 
+        getProxy().registerChannel("transbungee"); // Register plugin message channel
+
         getLogger().log(Level.INFO, "Plugin successfully loaded!");
     }
 
     @Override
     public void onDisable() {
         // Plugin shutdown logic
+
+        getProxy().unregisterChannel("transbungee");
     }
 }
