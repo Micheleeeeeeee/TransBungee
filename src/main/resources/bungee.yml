@@ -1,0 +1,3 @@
+name: TransBungee
+version: ${project.version}
+main: me.transmc.transbungee.TransBungee
