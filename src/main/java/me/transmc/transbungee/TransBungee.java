@@ -1,5 +1,7 @@
 package me.transmc.transbungee;
 
+import me.transmc.transbungee.events.PluginMessageHandler;
+import me.transmc.transbungee.modules.find.FindCommand;
 import net.md_5.bungee.api.plugin.Plugin;
 
 import java.util.logging.Level;
@@ -26,7 +28,9 @@ public final class TransBungee extends Plugin {
          * Do shit here uwu
          */
 
-        getProxy().registerChannel("transbungee"); // Register plugin message channel
+        getProxy().registerChannel("trans:bungee"); // Register plugin message channel
+
+        getProxy().getPluginManager().registerListener(this, new PluginMessageHandler());
 
         getLogger().log(Level.INFO, "Plugin successfully loaded!");
     }
