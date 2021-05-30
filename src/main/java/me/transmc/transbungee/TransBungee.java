@@ -1,11 +1,11 @@
 package me.transmc.transbungee;
 
-import me.TransMC.TransMC.TransMC;
 import me.transmc.transbungee.api.BungeeApi;
+import me.transmc.transbungee.api.C;
 import me.transmc.transbungee.events.PluginMessageHandler;
-import me.transmc.transbungee.modules.find.FindCommand;
 import net.md_5.bungee.api.plugin.Plugin;
 
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 
 public final class TransBungee extends Plugin {
@@ -42,6 +42,21 @@ public final class TransBungee extends Plugin {
         getProxy().getPluginManager().registerListener(this, new PluginMessageHandler());
 
         getLogger().log(Level.INFO, "Plugin successfully loaded!");
+
+
+        getProxy().getScheduler().schedule(
+                this
+                , new Runnable() {
+                    @Override
+                    public void run() {
+                        api.getConverstations().clear();
+                        System.out.println(C.yellow + "Private messages HashMap has been cleared!");
+                    }
+                }
+                , 6
+                , 0
+                , TimeUnit.MINUTES
+        );
     }
 
     @Override
