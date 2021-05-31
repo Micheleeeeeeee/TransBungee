@@ -1,6 +1,5 @@
 package me.transmc.transbungee.api;
 
-import me.TransMC.TransMC.TransMC;
 import me.TransMC.TransMC.api.C;
 import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -13,7 +12,6 @@ import java.util.Optional;
 
 public class BungeeApi {
 
-    private TransMC core = TransMC.getInstance();
     private HashMap<ProxiedPlayer, ProxiedPlayer> conversations = new HashMap<>();
 
     public void sendToBukkit(final String channel, final String message, final ServerInfo server) {

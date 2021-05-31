@@ -1,7 +1,6 @@
 package me.transmc.transbungee.events;
 
 
-import me.TransMC.TransMC.TransMC;
 import me.transmc.transbungee.TransBungee;
 import me.transmc.transbungee.api.BungeeApi;
 import me.transmc.transbungee.api.C;
@@ -22,7 +21,6 @@ public class PluginMessageHandler implements Listener {
 
     private BungeeApi api = TransBungee.getApi();
     private TransBungee bungee = TransBungee.getInstance();
-    private TransMC core = TransMC.getInstance();
 
     @EventHandler
     public void onPluginMessage(PluginMessageEvent e) {
