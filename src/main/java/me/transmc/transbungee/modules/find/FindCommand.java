@@ -16,8 +16,5 @@ public class FindCommand extends Command {
         if (!(sender instanceof ProxiedPlayer)) {
             System.out.println("Only players may execute this command.");
         }
-
-        ProxiedPlayer p = (ProxiedPlayer) sender;
-
     }
 }

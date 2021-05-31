@@ -14,10 +14,9 @@ import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 public class PluginMessageHandler implements Listener {
-
-
 
     private BungeeApi api = TransBungee.getApi();
     private TransBungee bungee = TransBungee.getInstance();
@@ -40,6 +39,7 @@ public class PluginMessageHandler implements Listener {
                         ServerInfo all = TransBungee.getInstance().getProxy().getServerInfo(name);
                         api.sendToBukkit(channel, message, all);
                     }
+
                 } else if (channel.equalsIgnoreCase("locate")) {
                     final ProxiedPlayer target = bungee.getProxy().getPlayer(in.readUTF());
                     final ProxiedPlayer sender = bungee.getProxy().getPlayer(in.readUTF());
@@ -68,10 +68,55 @@ public class PluginMessageHandler implements Listener {
 
                     api.sendConversationMessage(sender, lastSender, msg);
 
+                } else if (channel.equalsIgnoreCase("send")) {
+
+                    final String targets = in.readUTF();
+                    final ProxiedPlayer sender = bungee.getProxy().getPlayer(in.readUTF());
+                    final String serverName = in.readUTF();
+                    final ServerInfo server = bungee.getProxy().getServerInfo(serverName);
+
+                    Map<String, ServerInfo> servers = TransBungee.getInstance().getProxy().getServers();
+
+                    if (!servers.containsKey(server)) {
+                        sender.sendMessage(C.prefix(serverName + " does not exist."));
+                    }
+
+                    if (targets.equalsIgnoreCase("@a") || targets.equalsIgnoreCase("*")) {
+
+                        for (ProxiedPlayer target : bungee.getProxy().getPlayers()) {
+                            connect(serverName, server, target);
+                        }
+
+                    } else {
+                        final ProxiedPlayer target = bungee.getProxy().getPlayer(targets);
+
+                        connect(serverName, server, target);
+
+                    }
                 }
+
             } catch (IOException ioException) {
                 ioException.printStackTrace();
             }
         }
+    }
+
+    private void connect(String serverName, ServerInfo server, ProxiedPlayer target) {
+        target.sendMessage(C.prefix("You are being sent to " + serverName + " by an administrator in 3 seconds..."));
+
+        bungee.getProxy().getScheduler().schedule(
+                bungee
+                , new Runnable() {
+                    @Override
+                    public void run() {
+
+                    }
+                }
+                , 3
+                , 0
+                , TimeUnit.SECONDS
+        );
+
+        target.connect(server);
     }
 }
