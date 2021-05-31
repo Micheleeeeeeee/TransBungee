@@ -1,10 +1,17 @@
 package me.transmc.transbungee;
 
+import me.transmc.transbungee.api.BungeeApi;
+import me.transmc.transbungee.api.C;
+import me.transmc.transbungee.events.PluginMessageHandler;
 import net.md_5.bungee.api.plugin.Plugin;
 
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 
 public final class TransBungee extends Plugin {
+
+    private static TransBungee instance;
+    private static BungeeApi api;
 
     /**
      *
@@ -18,6 +25,9 @@ public final class TransBungee extends Plugin {
 
     @Override
     public void onEnable() {
+
+        instance = this;
+        api = new BungeeApi();
         // Plugin startup logic
 
         getLogger().log(Level.INFO, "Starting up...");
@@ -26,11 +36,40 @@ public final class TransBungee extends Plugin {
          * Do shit here uwu
          */
 
+        getProxy().registerChannel("trans:bungee"); // Register plugin message channel
+        getProxy().registerChannel("trans:return");
+
+        getProxy().getPluginManager().registerListener(this, new PluginMessageHandler());
+
         getLogger().log(Level.INFO, "Plugin successfully loaded!");
+
+
+        getProxy().getScheduler().schedule(
+                this
+                , new Runnable() {
+                    @Override
+                    public void run() {
+                        api.getConverstations().clear();
+                        System.out.println(C.yellow + "Private messages HashMap has been cleared!");
+                    }
+                }
+                , 6
+                , 0
+                , TimeUnit.MINUTES
+        );
     }
 
     @Override
     public void onDisable() {
         // Plugin shutdown logic
+
+    }
+
+    public static TransBungee getInstance() {
+        return instance;
+    }
+
+    public static BungeeApi getApi() {
+        return api;
     }
 }
