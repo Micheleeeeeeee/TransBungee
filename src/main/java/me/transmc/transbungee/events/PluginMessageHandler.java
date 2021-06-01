@@ -52,11 +52,13 @@ public class PluginMessageHandler implements Listener {
                         sender.sendMessage(C.prefix(target.getName() + " has been located on: " + serverName));
                     }
                 } else if (channel.equalsIgnoreCase("private_message")) {
-                    final ProxiedPlayer target = bungee.getProxy().getPlayer(in.readUTF());
-                    final ProxiedPlayer sender = bungee.getProxy().getPlayer(in.readUTF());
-                    final String msg = in.readUTF();
+                    String targetName = in.readUTF();
+                    String senderName = in.readUTF();
+                    String msg = in.readUTF();
+                    final ProxiedPlayer target = bungee.getProxy().getPlayer(targetName);
+                    final ProxiedPlayer sender = bungee.getProxy().getPlayer(senderName);
 
-                    if (!target.isConnected()) {
+                    if (target == null) {
                         sender.sendMessage(C.prefix("Target player is not online."));
                     } else {
                         api.sendConversationMessage(sender, target, msg);

@@ -1,6 +1,5 @@
 package me.transmc.transbungee.api;
 
-import me.TransMC.TransMC.api.C;
 import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
@@ -38,8 +37,8 @@ public class BungeeApi {
      */
 
     public void sendConversationMessage(final ProxiedPlayer from, final ProxiedPlayer to, final String msg) {
-        from.sendMessage(me.TransMC.TransMC.api.C.yellow + "From " + me.TransMC.TransMC.api.C.reset + to.getName() + me.TransMC.TransMC.api.C.gray + ": " + me.TransMC.TransMC.api.C.replaceColors(msg));
-        to.sendMessage(me.TransMC.TransMC.api.C.yellow + "To " + me.TransMC.TransMC.api.C.reset + from.getName() + me.TransMC.TransMC.api.C.gray + ": " + C.replaceColors(msg));
+        from.sendMessage(C.yellow + "From " + C.reset + to.getName() + C.gray + ": " + C.replaceColors(msg));
+        to.sendMessage(C.yellow + "To " + C.reset + from.getName() + C.gray + ": " + C.replaceColors(msg));
         conversations.putIfAbsent(to, from);
     }
 
