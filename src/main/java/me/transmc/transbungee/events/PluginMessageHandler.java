@@ -14,7 +14,6 @@ import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 public class PluginMessageHandler implements Listener {
 
@@ -52,6 +51,7 @@ public class PluginMessageHandler implements Listener {
                         sender.sendMessage(C.prefix(target.getName() + " has been located on: " + serverName));
                     }
                 } else if (channel.equalsIgnoreCase("private_message")) {
+
                     String targetName = in.readUTF();
                     String senderName = in.readUTF();
                     String msg = in.readUTF();
@@ -64,6 +64,7 @@ public class PluginMessageHandler implements Listener {
                         api.sendConversationMessage(sender, target, msg);
                     }
                 } else if (channel.equalsIgnoreCase("private_message_reply")) {
+
                     final ProxiedPlayer sender = bungee.getProxy().getPlayer(in.readUTF());
                     final ProxiedPlayer lastSender = bungee.getProxy().getPlayer(in.readUTF());
                     final String msg = in.readUTF();
@@ -79,9 +80,6 @@ public class PluginMessageHandler implements Listener {
 
                     Map<String, ServerInfo> servers = TransBungee.getInstance().getProxy().getServers();
 
-                    if (!servers.containsKey(server)) {
-                        sender.sendMessage(C.prefix(serverName + " does not exist."));
-                    }
 
                     if (targets.equalsIgnoreCase("@a") || targets.equalsIgnoreCase("*")) {
 
@@ -89,11 +87,15 @@ public class PluginMessageHandler implements Listener {
                             connect(serverName, server, target);
                         }
 
+                        sender.sendMessage(C.prefix("You have sent all players to " + serverName));
+
                     } else {
+
                         final ProxiedPlayer target = bungee.getProxy().getPlayer(targets);
 
                         connect(serverName, server, target);
 
+                        sender.sendMessage(C.prefix("You have sent " + target.getName() + " to " + serverName));
                     }
                 }
 
@@ -104,20 +106,7 @@ public class PluginMessageHandler implements Listener {
     }
 
     private void connect(String serverName, ServerInfo server, ProxiedPlayer target) {
-        target.sendMessage(C.prefix("You are being sent to " + serverName + " by an administrator in 3 seconds..."));
-
-        bungee.getProxy().getScheduler().schedule(
-                bungee
-                , new Runnable() {
-                    @Override
-                    public void run() {
-
-                    }
-                }
-                , 3
-                , 0
-                , TimeUnit.SECONDS
-        );
+        target.sendMessage(C.prefix("You were sent to " + serverName + " by an administrator..."));
 
         target.connect(server);
     }

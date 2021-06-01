@@ -37,8 +37,8 @@ public class BungeeApi {
      */
 
     public void sendConversationMessage(final ProxiedPlayer from, final ProxiedPlayer to, final String msg) {
-        from.sendMessage(C.yellow + "From " + C.reset + to.getName() + C.gray + ": " + C.replaceColors(msg));
-        to.sendMessage(C.yellow + "To " + C.reset + from.getName() + C.gray + ": " + C.replaceColors(msg));
+        to.sendMessage(C.yellow + "From " + C.reset + from.getName() + C.gray + ": " + C.replaceColors(msg));
+        from.sendMessage(C.yellow + "To " + C.reset + to.getName() + C.gray + ": " + C.replaceColors(msg));
         conversations.putIfAbsent(to, from);
     }
 
