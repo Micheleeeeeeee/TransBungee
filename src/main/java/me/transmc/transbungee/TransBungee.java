@@ -100,4 +100,5 @@ public final class TransBungee extends Plugin {
          * TODO: Whitelisted server checkers (custom messaging shit)
          */
     }
+
 }
