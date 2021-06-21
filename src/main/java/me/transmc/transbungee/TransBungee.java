@@ -1,10 +1,14 @@
 package me.transmc.transbungee;
 
+import me.TransMC.TransMC.api.enumaccess.ServerStatus;
 import me.transmc.transbungee.api.BungeeApi;
 import me.transmc.transbungee.api.C;
 import me.transmc.transbungee.events.PluginMessageHandler;
 import net.md_5.bungee.api.plugin.Plugin;
 
+import java.io.IOException;
+import java.net.Socket;
+import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 
@@ -12,6 +16,7 @@ public final class TransBungee extends Plugin {
 
     private static TransBungee instance;
     private static BungeeApi api;
+    private static HashMap<ServerStatus, String> servers = new HashMap<>();
 
     /**
      *
@@ -57,6 +62,13 @@ public final class TransBungee extends Plugin {
                 , 0
                 , TimeUnit.MINUTES
         );
+
+        System.out.println(C.yellow + "STARTUP SERVER PINGING");
+        System.out.println(C.yellow + "STARTUP SERVER PINGING");
+        System.out.println(C.yellow + "STARTUP SERVER PINGING");
+
+        checkServer("lobby", 25566, "localhost");
+        checkServer("cock_testing", 25567, "localhost");
     }
 
     @Override
@@ -71,5 +83,21 @@ public final class TransBungee extends Plugin {
 
     public static BungeeApi getApi() {
         return api;
+    }
+
+    private void checkServer(final String serverName, final int port, final String address) {
+        try {
+
+            final Socket server = new Socket(address, port);
+            server.close();
+
+            servers.put(ServerStatus.ONLINE, serverName);
+        } catch (IOException e) {
+            servers.put(ServerStatus.OFFLINE, serverName);
+        }
+
+        /**
+         * TODO: Whitelisted server checkers (custom messaging shit)
+         */
     }
 }

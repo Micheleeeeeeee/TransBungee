@@ -65,9 +65,18 @@ public class PluginMessageHandler implements Listener {
                     }
                 } else if (channel.equalsIgnoreCase("private_message_reply")) {
 
-                    final ProxiedPlayer sender = bungee.getProxy().getPlayer(in.readUTF());
                     final ProxiedPlayer lastSender = bungee.getProxy().getPlayer(in.readUTF());
-                    final String msg = in.readUTF();
+                    String targetName = in.readUTF();
+                    String senderName = in.readUTF();
+                    String msg = in.readUTF();
+                    final ProxiedPlayer target = bungee.getProxy().getPlayer(targetName);
+                    final ProxiedPlayer sender = bungee.getProxy().getPlayer(senderName);
+
+                    if (target == null) {
+                        sender.sendMessage(C.prefix("Target player is not online."));
+                    } else {
+                        api.sendConversationMessage(sender, target, msg);
+                    }
 
                     api.sendConversationMessage(sender, lastSender, msg);
 
